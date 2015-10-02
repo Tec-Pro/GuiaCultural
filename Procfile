@@ -1,1 +1,1 @@
-web:    java -cp target/classes:target/dependency/* Main
+web:    java -jar target/GuiaCultural-1.0-SNAPSHOT.jar
