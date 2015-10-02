@@ -1,0 +1,6 @@
+{
+  "name": "Guia Cultural",
+  "description": "App de espectáculos públicos.",
+  "image": "heroku/java",
+  "addons": [ "heroku-postgresql" ]
+}
