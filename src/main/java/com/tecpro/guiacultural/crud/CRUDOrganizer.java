@@ -26,6 +26,7 @@ public class CRUDOrganizer {
             Statement stmt = conn.createStatement();
             int affected_rows = stmt.executeUpdate("INSERT INTO organizer(name) VALUES ('" + name + "');");
             if (affected_rows >= 1) {
+                System.out.println("Acá si");
                 try (ResultSet generated_keys = stmt.getGeneratedKeys()){
                     if (generated_keys.next()){
                         return get(generated_keys.getInt("id"));
@@ -33,7 +34,7 @@ public class CRUDOrganizer {
                 }
             }
         } catch (SQLException sql) {
-            System.out.println(sql.toString());
+            System.out.println("ERROR: "+sql.toString());
         }
         return get(-1);
     }
