@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
 
 /**
  *
@@ -39,6 +40,22 @@ public class Organizer {
             rs.next();
             return new Organizer(rs.getInt(1), rs.getString(2));
         } catch (SQLException sql) {
+            System.out.println(sql.toString());
+        }
+        return null;
+    }
+    
+    public LinkedList<Organizer> list(){
+        Connection conn = getConnection();
+        LinkedList<Organizer> res = new LinkedList<>();
+        try{
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM organizer");
+            while(rs.next()){
+                res.add(new Organizer(rs.getInt(1),rs.getString(2)));
+            }
+            return res;
+        } catch (SQLException sql){
             System.out.println(sql.toString());
         }
         return null;

@@ -13,6 +13,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +34,11 @@ public class OrganizerController {
        return org.get(id);
     }
 
-
+    @RequestMapping(value="/organizers",method = RequestMethod.GET)
+    public LinkedList<Organizer> getOrganizers(){
+        Organizer org = new Organizer();
+        return org.list();
+    }
     
    
 }
