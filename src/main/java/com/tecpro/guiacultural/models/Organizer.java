@@ -61,6 +61,17 @@ public class Organizer {
         return null;
     }
 
+    
+    public int create(String name){
+        Connection conn = getConnection();
+        try{
+            Statement stmt = conn.createStatement();
+            return stmt.executeUpdate("INSERT INTO organizer(name) VALUES ('"+name+"');");
+        } catch (SQLException sql){
+            System.out.println(sql.toString());
+        }
+        return 0;
+    }
     /**
      * @return the name
      */

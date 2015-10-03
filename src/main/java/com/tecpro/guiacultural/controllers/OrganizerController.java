@@ -28,17 +28,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class OrganizerController {
 
-    @RequestMapping(value="/organizer", method = RequestMethod.GET)
+    @RequestMapping(value = "/organizer", method = RequestMethod.GET)
     public Organizer getOrganizer(@RequestParam(value = "id", defaultValue = "1") int id) {
-       Organizer org = new Organizer();
-       return org.get(id);
+        Organizer org = new Organizer();
+        return org.get(id);
     }
 
-    @RequestMapping(value="/organizers",method = RequestMethod.GET)
-    public LinkedList<Organizer> getOrganizers(){
+    @RequestMapping(value = "/organizers", method = RequestMethod.GET)
+    public LinkedList<Organizer> getOrganizers() {
         Organizer org = new Organizer();
         return org.list();
     }
-    
-   
+
+    @RequestMapping(value = "/organizer", method = RequestMethod.PUT)
+    public int createOrganizer(@RequestParam(value = "name") String name) {
+        if (!name.isEmpty()) {
+            Organizer org = new Organizer();
+            return org.create(name);
+        }
+        return -1;
+    }
+
 }
