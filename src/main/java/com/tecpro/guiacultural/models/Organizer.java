@@ -36,6 +36,7 @@ public class Organizer {
         try {
             Statement stmt = connection.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM organizer WHERE id="+id);
+            rs.next();
             return new Organizer(rs.getInt(1), rs.getString(2));
         } catch (SQLException sql) {
             System.out.println(sql.toString());
