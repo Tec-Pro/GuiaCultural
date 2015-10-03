@@ -19,11 +19,11 @@ import java.sql.Statement;
  */
 public class Organizer {
 
-    private String content;
+    private String name;
     private int id;
 
-    public Organizer(int id, String content) {
-        this.content = content;
+    public Organizer(int id, String name) {
+        this.name = name;
         this.id = id;
     }
 
@@ -46,15 +46,15 @@ public class Organizer {
     /**
      * @return the name
      */
-    public String getContent() {
-        return content;
+    public String getName() {
+        return name;
     }
 
     /**
      * @param name the name to set
      */
-    public void setContent(String content) {
-        this.content = content;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
