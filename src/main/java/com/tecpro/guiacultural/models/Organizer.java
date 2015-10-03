@@ -5,15 +5,6 @@
  */
 package com.tecpro.guiacultural.models;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.LinkedList;
-
 /**
  *
  * @author joako
@@ -28,23 +19,8 @@ public class Organizer {
         this.id = id;
     }
 
-    public Organizer() {
-
-    }
-
-    public Organizer get(int id) {
-        Connection connection = getConnection();
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM organizer WHERE id="+id);
-            rs.next();
-            return new Organizer(rs.getInt(1), rs.getString(2));
-        } catch (SQLException sql) {
-            System.out.println(sql.toString());
-        }
-        return null;
-    }
     
+    /*
     public LinkedList<Organizer> list(){
         Connection conn = getConnection();
         LinkedList<Organizer> res = new LinkedList<>();
@@ -62,16 +38,6 @@ public class Organizer {
     }
 
     
-    public int create(String name){
-        Connection conn = getConnection();
-        try{
-            Statement stmt = conn.createStatement();
-            return stmt.executeUpdate("INSERT INTO organizer(name) VALUES ('"+name+"');");
-        } catch (SQLException sql){
-            System.out.println(sql.toString());
-        }
-        return 0;
-    }
     /**
      * @return the name
      */
@@ -100,21 +66,4 @@ public class Organizer {
         this.id = id;
     }
 
-    private Connection getConnection() {
-        try {
-            URI dbUri = new URI(System.getenv("DATABASE_URL"));
-
-            String username = dbUri.getUserInfo().split(":")[0];
-            String password = dbUri.getUserInfo().split(":")[1];
-            String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
-
-            return DriverManager.getConnection(dbUrl, username, password);
-        } catch (URISyntaxException uri) {
-            System.out.println("URI Exception: " + uri.getReason() + " Message: " + uri.getMessage());
-            System.out.println("On input: " + uri.getInput());
-        } catch (SQLException sql) {
-            System.out.println("SQL Exception: " + sql.getSQLState());
-        }
-        return null;
-    }
 }

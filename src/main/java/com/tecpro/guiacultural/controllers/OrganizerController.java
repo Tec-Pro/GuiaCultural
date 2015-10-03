@@ -5,6 +5,7 @@
  */
 package com.tecpro.guiacultural.controllers;
 
+import com.tecpro.guiacultural.crud.CRUDOrganizer;
 import com.tecpro.guiacultural.models.Organizer;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -30,23 +31,23 @@ public class OrganizerController {
 
     @RequestMapping(value = "/organizer", method = RequestMethod.GET)
     public Organizer getOrganizer(@RequestParam(value = "id", defaultValue = "1") int id) {
-        Organizer org = new Organizer();
-        return org.get(id);
+        CRUDOrganizer crud = new CRUDOrganizer();
+        return crud.get(id);
     }
 
-    @RequestMapping(value = "/organizers", method = RequestMethod.GET)
+   /* @RequestMapping(value = "/organizers", method = RequestMethod.GET)
     public LinkedList<Organizer> getOrganizers() {
         Organizer org = new Organizer();
         return org.list();
-    }
+    }*/
 
     @RequestMapping(value = "/organizer", method = RequestMethod.PUT)
-    public int createOrganizer(@RequestParam(value = "name") String name) {
+    public Organizer createOrganizer(@RequestParam(value = "name") String name) {
         if (!name.isEmpty()) {
-            Organizer org = new Organizer();
-            return org.create(name);
+            CRUDOrganizer crud = new CRUDOrganizer();
+            return crud.create(name);
         }
-        return -1;
+        return new Organizer(0,"null");
     }
 
 }
