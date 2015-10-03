@@ -19,24 +19,30 @@ import java.sql.Statement;
  * @author joako
  */
 public class CRUDOrganizer {
-    
-    public Organizer create(String name){
+
+    public Organizer create(String name) {
         Connection conn = getConnection();
-        try{
+        try {
             Statement stmt = conn.createStatement();
-            int last_id = stmt.executeUpdate("INSERT INTO organizer(name) VALUES ('"+name+"') returning id;");
-            return get(last_id);
-        } catch (SQLException sql){
+            int affected_rows = stmt.executeUpdate("INSERT INTO organizer(name) VALUES ('" + name + "');");
+            if (affected_rows >= 1) {
+                try (ResultSet generated_keys = stmt.getGeneratedKeys()){
+                    if (generated_keys.next()){
+                        return get(generated_keys.getInt("id"));
+                    }
+                }
+            }
+        } catch (SQLException sql) {
             System.out.println(sql.toString());
         }
-        return get(1);
+        return get(-1);
     }
-    
+
     public Organizer get(int id) {
         Connection connection = getConnection();
         try {
             Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM organizer WHERE id="+id);
+            ResultSet rs = stmt.executeQuery("SELECT * FROM organizer WHERE id=" + id);
             rs.next();
             return new Organizer(rs.getInt(1), rs.getString(2));
         } catch (SQLException sql) {
@@ -45,19 +51,19 @@ public class CRUDOrganizer {
         return null;
     }
     /*
-    public LinkedList<Organizer> list(){
+     public LinkedList<Organizer> list(){
         
-    }
+     }
     
-    public boolean delete(int id){
+     public boolean delete(int id){
         
-    }
+     }
     
-    public Organizer update(int id, String name){
+     public Organizer update(int id, String name){
         
-    }
-    */
-    
+     }
+     */
+
     private Connection getConnection() {
         try {
             URI dbUri = new URI(System.getenv("DATABASE_URL"));
