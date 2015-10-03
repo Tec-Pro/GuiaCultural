@@ -10,6 +10,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,12 +24,13 @@ public class CRUDOrganizer {
     public Organizer create(String name) {
         Connection conn = getConnection();
         try {
-            Statement stmt = conn.createStatement();
-            int affected_rows = stmt.executeUpdate("INSERT INTO organizer(name) VALUES ('" + name + "');");
-            if (affected_rows >= 1) {
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO organizer(name) VALUES ('" + name + "');", Statement.RETURN_GENERATED_KEYS);
+            
+            if (stmt.execute()) {
                 System.out.println("Acá si");
-                try (ResultSet generated_keys = stmt.getResultSet()){
+                try (ResultSet generated_keys = stmt.getGeneratedKeys()){
                     System.out.println("Acá también");
+                    generated_keys.next();
                     if (generated_keys.next()){
                         System.out.println("ID: "+generated_keys.getInt(1));
                         return get(generated_keys.getInt("id"));
