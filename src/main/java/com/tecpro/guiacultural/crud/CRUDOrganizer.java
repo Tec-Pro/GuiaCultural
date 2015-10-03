@@ -32,6 +32,8 @@ public class CRUDOrganizer {
                         System.out.println("ID: "+generated_keys.getInt(1));
                         return get(generated_keys.getInt("id"));
                     }
+                } catch (Exception e){
+                    System.out.println("Loco se rompe todo acá");
                 }
             }
         } catch (SQLException sql) {
