@@ -27,7 +27,7 @@ public class CRUDOrganizer {
             int affected_rows = stmt.executeUpdate("INSERT INTO organizer(name) VALUES ('" + name + "');");
             if (affected_rows >= 1) {
                 System.out.println("Acá si");
-                try (ResultSet generated_keys = stmt.getGeneratedKeys()){
+                try (ResultSet generated_keys = stmt.getResultSet()){
                     System.out.println("Acá también");
                     if (generated_keys.next()){
                         System.out.println("ID: "+generated_keys.getInt(1));
