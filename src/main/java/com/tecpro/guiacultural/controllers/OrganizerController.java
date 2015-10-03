@@ -34,6 +34,8 @@ public class OrganizerController {
             Statement stmt = connection.createStatement();
             try {
                 ResultSet rs = stmt.executeQuery("SELECT * FROM organizer WHERE id=" + id);
+                System.out.println(rs);
+                rs.next();
                 return new Organizer(rs.getInt(1),rs.getString(2));
             } catch (SQLException ex) {
                 Logger.getLogger(OrganizerController.class.getName()).log(Level.SEVERE, null, ex);
