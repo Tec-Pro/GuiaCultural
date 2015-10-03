@@ -29,6 +29,7 @@ public class CRUDOrganizer {
                 System.out.println("Acá si");
                 try (ResultSet generated_keys = stmt.getGeneratedKeys()){
                     if (generated_keys.next()){
+                        System.out.println("ID: "+generated_keys.getInt(1));
                         return get(generated_keys.getInt("id"));
                     }
                 }
