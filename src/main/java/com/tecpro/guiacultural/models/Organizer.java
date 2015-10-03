@@ -11,4 +11,6 @@ package com.tecpro.guiacultural.models;
  */
 public class Organizer {
     
+    
+    
 }
