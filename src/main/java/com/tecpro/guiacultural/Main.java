@@ -5,12 +5,17 @@
  */
 package com.tecpro.guiacultural;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 /**
  *
  * @author joako
  */
+@SpringBootApplication
 public class Main {
 
     public static void main(String args[]) {
+        SpringApplication.run(Main.class, args);
     }
 }

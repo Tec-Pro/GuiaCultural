@@ -36,7 +36,6 @@ public class CRUDOrganizer {
     public Organizer get(int id) {
         openBase();
         Organizer organizer = Organizer.findById(id);
-        System.out.println("");
         return organizer;
     }
 
