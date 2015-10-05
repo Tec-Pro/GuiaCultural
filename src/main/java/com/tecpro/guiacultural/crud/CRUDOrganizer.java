@@ -48,11 +48,17 @@ public class CRUDOrganizer {
      public boolean delete(int id){
         
      }
-    
+    */
      public Organizer update(int id, String name){
-        
+        openBase();
+        Base.openTransaction();
+        Organizer organizer = Organizer.findById(id);
+        organizer.setString("name", name);
+        organizer.saveIt();
+        Base.commitTransaction();
+        return organizer;
      }
-     */
+     
     private void openBase() {
         try {
             URI dbUri = new URI(System.getenv("DATABASE_URL"));
