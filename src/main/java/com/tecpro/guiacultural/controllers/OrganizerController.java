@@ -17,6 +17,8 @@ import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.javalite.activejdbc.LazyList;
+import org.javalite.activejdbc.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,19 +37,19 @@ public class OrganizerController {
         return crud.get(id);
     }
 
-   /* @RequestMapping(value = "/organizers", method = RequestMethod.GET)
-    public LinkedList<Organizer> getOrganizers() {
-        Organizer org = new Organizer();
-        return org.list();
-    }*/
+    @RequestMapping(value = "/organizers", method = RequestMethod.GET)
+    public LazyList<Model> getOrganizers() {
+        CRUDOrganizer crud = new CRUDOrganizer();
+        return crud.list();
+    }
 
     @RequestMapping(value = "/organizer", method = RequestMethod.PUT)
-    public boolean createOrganizer(@RequestParam(value = "name") String name) {
+    public Organizer createOrganizer(@RequestParam(value = "name") String name) {
         if (!name.isEmpty()) {
             CRUDOrganizer crud = new CRUDOrganizer();
             return crud.create(name);
         }
-        return false;
+        return null;
     }
 
 }

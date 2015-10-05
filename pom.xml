@@ -42,6 +42,16 @@
         </dependency>
         <!-- end:: postgres-jdbc -->
         
+        <!-- tag:: activejdbc -->
+        <dependency>
+            <groupId>org.javalite</groupId>
+            <artifactId>activejdbc</artifactId>
+            <version>1.4.11</version>
+            <type>jar</type>
+        </dependency>
+        <!-- end:: activejdbc -->
+        
+        
         <!-- tag:: joda[] -->
         <dependency>
             <groupId>joda-time</groupId>
@@ -67,24 +77,66 @@
    
     <build>
         <plugins>
+            
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.javalite</groupId>
+                <artifactId>activejdbc-instrumentation</artifactId>
+                <version>1.4.11</version>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>instrument</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
     
     
     <repositories>
+        
         <repository>
             <id>spring-releases</id>
             <url>https://repo.spring.io/libs-release</url>
         </repository>
+        
+        
+        <repository>
+            <id>javalite-snapshots</id>
+            <name>JavaLite Snapshots</name>
+            <url>http://repo.javalite.io/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
     <pluginRepositories>
+        
         <pluginRepository>
             <id>spring-releases</id>
             <url>https://repo.spring.io/libs-release</url>
+        </pluginRepository>
+        
+        <pluginRepository>
+            <id>javalite-plugin-snapshots</id>
+            <name>JavaLite Plugin Snapshots</name>
+            <url>http://repo.javalite.io/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </pluginRepository>
     </pluginRepositories>
 </project>

@@ -5,39 +5,22 @@
  */
 package com.tecpro.guiacultural.models;
 
+import org.javalite.activejdbc.Model;
+
 /**
  *
  * @author joako
  */
-public class Organizer {
+public class Organizer extends Model {
 
     private String name;
-    private int id;
+    private int organizer_id;
 
     public Organizer(int id, String name) {
         this.name = name;
-        this.id = id;
+        this.organizer_id = id;
     }
-
-    
-    /*
-    public LinkedList<Organizer> list(){
-        Connection conn = getConnection();
-        LinkedList<Organizer> res = new LinkedList<>();
-        try{
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM organizer");
-            while(rs.next()){
-                res.add(new Organizer(rs.getInt(1),rs.getString(2)));
-            }
-            return res;
-        } catch (SQLException sql){
-            System.out.println(sql.toString());
-        }
-        return null;
-    }
-
-    
+ 
     /**
      * @return the name
      */
@@ -53,17 +36,17 @@ public class Organizer {
     }
 
     /**
-     * @return the id
+     * @return the organizer_id
      */
-    public int getId() {
-        return id;
+    public int getOrganizerId() {
+        return organizer_id;
     }
 
     /**
-     * @param id the id to set
+     * @param id the organizer_id to set
      */
     public void setId(int id) {
-        this.id = id;
+        this.organizer_id = id;
     }
 
 }

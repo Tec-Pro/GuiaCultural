@@ -14,6 +14,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
+import org.javalite.activejdbc.Base;
+import org.javalite.activejdbc.LazyList;
+import org.javalite.activejdbc.Model;
 
 /**
  *
@@ -21,40 +25,25 @@ import java.sql.Statement;
  */
 public class CRUDOrganizer {
 
-    public boolean create(String name) {
-        Connection conn = getConnection();
-        try {
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO organizer(name) VALUES ('" + name + "');", Statement.RETURN_GENERATED_KEYS);
-            int altered = stmt.executeUpdate();
-            ResultSet rs = stmt.getResultSet();
-            System.out.println("HAY NEXT: "+rs.next());
-            System.out.println("EL ID: "+rs.getInt("id"));
-            if (altered >0){
-                return true;
-            }
-        } catch (SQLException sql) {
-            System.out.println("ERROR: "+sql.toString());
-        }
-        return false;
+    public Organizer create(String name) {
+        openBase();
+        Base.openTransaction();
+        Organizer organizer = Organizer.createIt("name", name);
+        Base.commitTransaction();
+        return organizer;
     }
 
     public Organizer get(int id) {
-        Connection connection = getConnection();
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM organizer WHERE id=" + id);
-            rs.next();
-            return new Organizer(rs.getInt(1), rs.getString(2));
-        } catch (SQLException sql) {
-            System.out.println(sql.toString());
-        }
-        return null;
+        openBase();
+        return Organizer.findById(id);
     }
+
+    public LazyList<Model> list() {
+        openBase();
+        return Organizer.findAll();
+    }
+
     /*
-     public LinkedList<Organizer> list(){
-        
-     }
-    
      public boolean delete(int id){
         
      }
@@ -63,22 +52,18 @@ public class CRUDOrganizer {
         
      }
      */
-
-    private Connection getConnection() {
+    private void openBase() {
         try {
             URI dbUri = new URI(System.getenv("DATABASE_URL"));
-
             String username = dbUri.getUserInfo().split(":")[0];
             String password = dbUri.getUserInfo().split(":")[1];
             String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
-
-            return DriverManager.getConnection(dbUrl, username, password);
+            if (!Base.hasConnection()) {
+                Base.open("org.postgresql.Driver", dbUrl, username, password);
+            }
         } catch (URISyntaxException uri) {
             System.out.println("URI Exception: " + uri.getReason() + " Message: " + uri.getMessage());
             System.out.println("On input: " + uri.getInput());
-        } catch (SQLException sql) {
-            System.out.println("SQL Exception: " + sql.getSQLState());
         }
-        return null;
     }
 }
