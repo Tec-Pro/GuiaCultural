@@ -26,20 +26,8 @@ public class CRUDOrganizer {
         Connection conn = getConnection();
         try {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO organizer(name) VALUES ('" + name + "');", Statement.RETURN_GENERATED_KEYS);
-            
-            if (stmt.execute()) {
-                System.out.println("Acá si");
-                try (ResultSet generated_keys = stmt.getGeneratedKeys()){
-                    System.out.println("Acá también");
-                    int id = 0;
-                    while (generated_keys.next()){
-                        id = generated_keys.getInt(1);
-                    }
-                    generated_keys.close();
-                    return get(id);
-                } catch (Exception e){
-                    System.out.println(Arrays.toString(e.getStackTrace()));
-                }
+            while(stmt.getGeneratedKeys().next()){
+                return get(stmt.getGeneratedKeys().getInt(1));
             }
         } catch (SQLException sql) {
             System.out.println("ERROR: "+sql.toString());
