@@ -35,7 +35,9 @@ public class CRUDOrganizer {
 
     public Organizer get(int id) {
         openBase();
-        return Organizer.findById(id);
+        Organizer organizer = Organizer.findById(id);
+        System.out.println("");
+        return organizer;
     }
 
     public LazyList<Model> list() {
