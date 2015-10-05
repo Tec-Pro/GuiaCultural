@@ -42,12 +42,12 @@ public class OrganizerController {
     }*/
 
     @RequestMapping(value = "/organizer", method = RequestMethod.PUT)
-    public Organizer createOrganizer(@RequestParam(value = "name") String name) {
+    public boolean createOrganizer(@RequestParam(value = "name") String name) {
         if (!name.isEmpty()) {
             CRUDOrganizer crud = new CRUDOrganizer();
             return crud.create(name);
         }
-        return new Organizer(0,"null");
+        return false;
     }
 
 }
