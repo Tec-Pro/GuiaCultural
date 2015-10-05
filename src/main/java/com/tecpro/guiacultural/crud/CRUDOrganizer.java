@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 
 /**
  *
@@ -30,13 +31,14 @@ public class CRUDOrganizer {
                 System.out.println("Acá si");
                 try (ResultSet generated_keys = stmt.getGeneratedKeys()){
                     System.out.println("Acá también");
-                    generated_keys.next();
-                    if (generated_keys.next()){
-                        System.out.println("ID: "+generated_keys.getInt(1));
-                        return get(generated_keys.getInt("id"));
+                    int id = 0;
+                    while (generated_keys.next()){
+                        id = generated_keys.getInt(1);
                     }
+                    generated_keys.close();
+                    return get(id);
                 } catch (Exception e){
-                    System.out.println("Loco se rompe todo acá");
+                    System.out.println(Arrays.toString(e.getStackTrace()));
                 }
             }
         } catch (SQLException sql) {
