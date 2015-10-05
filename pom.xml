@@ -34,6 +34,13 @@
         </dependency>
         <!-- end:: commons-lang -->
         
+        <!-- tag:: postgres-jdbc -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+        <!-- end:: postgres-jdbc -->
+        
         <!-- tag:: activejdbc -->
         <dependency>
             <groupId>org.javalite</groupId>
