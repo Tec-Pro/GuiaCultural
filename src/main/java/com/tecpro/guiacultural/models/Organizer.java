@@ -12,5 +12,15 @@ import org.javalite.activejdbc.Model;
  * @author joako
  */
 public class Organizer extends Model {
-
+    int id;
+    String name;
+    
+    public Organizer(){
+        
+    }
+    
+    public Organizer(int id, String name){
+        this.id = id;
+        this.name = name;
+    }
 }

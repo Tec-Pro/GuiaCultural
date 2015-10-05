@@ -34,7 +34,8 @@ public class OrganizerController {
     @RequestMapping(value = "/organizer", method = RequestMethod.GET)
     public Organizer getOrganizer(@RequestParam(value = "id", defaultValue = "1") int id) {
         CRUDOrganizer crud = new CRUDOrganizer();
-        return crud.get(id);
+        Organizer organizer = crud.get(id);
+        return new Organizer(id, organizer.getString("name"));
     }
 
     @RequestMapping(value = "/organizers", method = RequestMethod.GET)
