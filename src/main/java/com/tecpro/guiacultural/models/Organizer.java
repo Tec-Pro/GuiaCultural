@@ -16,6 +16,10 @@ public class Organizer extends Model {
     private String name;
     private int organizer_id;
 
+    public Organizer(){
+        
+    }
+    
     public Organizer(int id, String name) {
         this.name = name;
         this.organizer_id = id;
