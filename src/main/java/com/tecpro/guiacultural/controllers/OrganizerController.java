@@ -32,10 +32,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrganizerController {
 
     @RequestMapping(value = "/organizer", method = RequestMethod.GET)
-    public Organizer getOrganizer(@RequestParam(value = "id", defaultValue = "1") int id) {
+    public String getOrganizer(@RequestParam(value = "id", defaultValue = "1") int id) {
         CRUDOrganizer crud = new CRUDOrganizer();
         Organizer organizer = crud.get(id);
-        return new Organizer(id, organizer.getString("name"));
+        return organizer.toJson(true);
     }
 
     @RequestMapping(value = "/organizers", method = RequestMethod.GET)
