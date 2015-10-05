@@ -14,7 +14,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
 
 /**
  *
@@ -22,17 +21,21 @@ import java.util.Arrays;
  */
 public class CRUDOrganizer {
 
-    public Organizer create(String name) {
+    public boolean create(String name) {
         Connection conn = getConnection();
         try {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO organizer(name) VALUES ('" + name + "');", Statement.RETURN_GENERATED_KEYS);
-            while(stmt.getGeneratedKeys().next()){
-                return get(stmt.getGeneratedKeys().getInt(1));
+            int altered = stmt.executeUpdate();
+            ResultSet rs = stmt.getResultSet();
+            System.out.println("HAY NEXT: "+rs.next());
+            System.out.println("EL ID: "+rs.getInt("id"));
+            if (altered >0){
+                return true;
             }
         } catch (SQLException sql) {
             System.out.println("ERROR: "+sql.toString());
         }
-        return get(-1);
+        return false;
     }
 
     public Organizer get(int id) {
