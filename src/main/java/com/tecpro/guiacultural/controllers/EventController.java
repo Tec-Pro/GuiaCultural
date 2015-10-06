@@ -8,11 +8,13 @@ package com.tecpro.guiacultural.controllers;
 import com.tecpro.guiacultural.crud.CRUDEvent;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
  * @author joako
  */
+@RestController
 public class EventController {
 
     @RequestMapping(value = "/events",method = RequestMethod.GET)
