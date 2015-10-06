@@ -16,6 +16,7 @@ import org.javalite.activejdbc.Model;
  * @author joako
  */
 public class CRUDTheaterPlay extends CRUDEvent {
+
     public TheaterPlay create(String name, String location, float price, String date_from, String date_until, String hour_from, String hour_until,
             int organizer_id, String description, String play, String actor_group, String actors, String rating, String synopsis) {
         openBase();
@@ -58,7 +59,7 @@ public class CRUDTheaterPlay extends CRUDEvent {
     }
 
     public TheaterPlay update(int id, String name, String location, float price, String date_from, String date_until, String hour_from, String hour_until,
-            int organizer_id, String description, String play, String actor_group, String actors, String rating, String synopsis) {
+            String description, String play, String actor_group, String actors, String rating, String synopsis) {
         openBase();
         Base.openTransaction();
         TheaterPlay proyection = TheaterPlay.findById(id);
@@ -77,5 +78,4 @@ public class CRUDTheaterPlay extends CRUDEvent {
         return proyection;
     }
 
-    
 }

@@ -21,19 +21,31 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class OrganizerController {
 
+    @RequestMapping(value = "/organizers", method = RequestMethod.GET)
+    public String index() {
+        CRUDOrganizer crud = new CRUDOrganizer();
+        return crud.list().toJson(true);
+    }
+
     /**
      *
      * @param id organizer id.
      * @return organizer data to json.
      */
     @RequestMapping(value = "/organizers/{id}", method = RequestMethod.GET)
-    public String show  (@PathVariable int id) {
+    public String show(@PathVariable int id) {
         CRUDOrganizer crud = new CRUDOrganizer();
         Organizer organizer = crud.get(id);
         if (organizer != null) {
             return organizer.toJson(true);
         }
         return "{error: \"organizer not found\"}";
+    }
+    
+    @RequestMapping(value = "/organizers/{id}/events",method = RequestMethod.GET)
+    public String indexEvents(@PathVariable int id){
+        CRUDOrganizer crud = new CRUDOrganizer();
+        return crud.listEvents(id).toJson(true);
     }
 
     @RequestMapping(value = "/organizers", method = RequestMethod.POST)
@@ -45,22 +57,16 @@ public class OrganizerController {
         return "{error: \"field name can't be empty\"}";
     }
 
-    @RequestMapping(value = "/organizers", method = RequestMethod.GET)
-    public String index() {
-        CRUDOrganizer crud = new CRUDOrganizer();
-        return crud.list().toJson(true);
-    }
-
-    @RequestMapping(value = "/organizers", method = RequestMethod.DELETE)
-    public String delete(@RequestParam(value = "id") int id) {
+    @RequestMapping(value = "/organizers/{id}", method = RequestMethod.DELETE)
+    public String delete(@PathVariable int id) {
         CRUDOrganizer crud = new CRUDOrganizer();
         return String.valueOf(crud.delete(id));
     }
 
-    @RequestMapping(value = "/organizers", method = RequestMethod.PUT)
-    public String update(@RequestParam Map<String, String> params) {
+    @RequestMapping(value = "/organizers/{id}", method = RequestMethod.PUT)
+    public String update(@PathVariable int id, @RequestParam Map<String, String> params) {
         CRUDOrganizer crud = new CRUDOrganizer();
-        return crud.update(Integer.parseInt(params.get("id")), params.get("name")).toJson(true);
+        return crud.update(id, params.get("name")).toJson(true);
     }
 
 }

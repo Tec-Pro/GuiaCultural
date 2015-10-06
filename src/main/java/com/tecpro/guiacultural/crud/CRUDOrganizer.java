@@ -5,6 +5,7 @@
  */
 package com.tecpro.guiacultural.crud;
 
+import com.tecpro.guiacultural.models.Event;
 import com.tecpro.guiacultural.models.Organizer;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -55,6 +56,11 @@ public class CRUDOrganizer {
         organizer.saveIt();
         Base.commitTransaction();
         return organizer;
+     }
+     
+     public LazyList<Model> listEvents(int id){
+         openBase();
+         return Event.where("organizer_id = ?", id);
      }
      
     private void openBase() {
