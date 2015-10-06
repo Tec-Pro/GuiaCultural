@@ -8,6 +8,7 @@ package com.tecpro.guiacultural.controllers;
 import com.tecpro.guiacultural.crud.CRUDOrganizer;
 import com.tecpro.guiacultural.models.Organizer;
 import java.util.Map;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,8 +26,8 @@ public class OrganizerController {
      * @param id organizer id.
      * @return organizer data to json.
      */
-    @RequestMapping(value = "/organizers/", method = RequestMethod.GET)
-    public String show  (@RequestParam(value = "id", defaultValue = "1") int id) {
+    @RequestMapping(value = "/organizers/{id}", method = RequestMethod.GET)
+    public String show  (@PathVariable int id) {
         CRUDOrganizer crud = new CRUDOrganizer();
         Organizer organizer = crud.get(id);
         if (organizer != null) {
