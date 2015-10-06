@@ -25,7 +25,7 @@ public class OrganizerController {
      * @param id organizer id.
      * @return organizer data to json.
      */
-    @RequestMapping(value = "/organizers", method = RequestMethod.GET)
+    @RequestMapping(value = "/organizers/", method = RequestMethod.GET)
     public String show  (@RequestParam(value = "id", defaultValue = "1") int id) {
         CRUDOrganizer crud = new CRUDOrganizer();
         Organizer organizer = crud.get(id);
