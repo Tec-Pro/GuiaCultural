@@ -5,6 +5,8 @@
  */
 package com.tecpro.guiacultural.crud;
 
+import com.tecpro.guiacultural.models.Event;
+import com.tecpro.guiacultural.models.Organizer;
 import java.net.URI;
 import java.net.URISyntaxException;
 import org.javalite.activejdbc.Base;
@@ -18,7 +20,7 @@ public class CRUDEvent {
     
     public LazyList list(){
         openBase();
-        return com.tecpro.guiacultural.models.Event.findAll();
+        return Event.findAll().include(Organizer.class);
     }
     
     protected void openBase() {
