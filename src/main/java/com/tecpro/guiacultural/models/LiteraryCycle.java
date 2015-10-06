@@ -6,14 +6,13 @@
 package com.tecpro.guiacultural.models;
 
 import org.javalite.activejdbc.Model;
+import org.javalite.activejdbc.annotations.Table;
 
 /**
  *
  * @author joako
  */
-public class Event extends Model {
-
-   
-
-   
+@Table("literary_cycle")
+public class LiteraryCycle extends Model {
+    
 }

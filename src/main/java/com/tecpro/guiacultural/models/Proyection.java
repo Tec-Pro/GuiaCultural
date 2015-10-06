@@ -11,9 +11,6 @@ import org.javalite.activejdbc.Model;
  *
  * @author joako
  */
-public class Event extends Model {
-
-   
-
-   
+public class Proyection extends Model{
+    
 }

@@ -8,13 +8,6 @@ package com.tecpro.guiacultural.crud;
 import com.tecpro.guiacultural.models.Organizer;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.LinkedList;
 import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 import org.javalite.activejdbc.Model;
@@ -44,11 +37,16 @@ public class CRUDOrganizer {
         return Organizer.findAll();
     }
 
-    /*
+    
      public boolean delete(int id){
-        
+        openBase();
+        Base.openTransaction();
+        Organizer organizer = Organizer.findById(id);
+        boolean result = organizer.delete();
+        Base.commitTransaction();
+        return result;
      }
-    */
+    
      public Organizer update(int id, String name){
         openBase();
         Base.openTransaction();
