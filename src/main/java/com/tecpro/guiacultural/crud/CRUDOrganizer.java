@@ -20,11 +20,16 @@ import org.javalite.activejdbc.Model;
 public class CRUDOrganizer {
 
     public Organizer create(String name) {
-        openBase();
-        Base.openTransaction();
-        Organizer organizer = Organizer.createIt("name", name);
-        Base.commitTransaction();
-        return organizer;
+        if (name != null) {
+            openBase();
+            Base.openTransaction();
+            Organizer organizer = Organizer.create("name", name);
+            if (organizer.save()) {
+                Base.commitTransaction();
+                return organizer;
+            }
+        }
+        return null;
     }
 
     public Organizer get(int id) {
@@ -38,31 +43,35 @@ public class CRUDOrganizer {
         return Organizer.findAll();
     }
 
-    
-     public boolean delete(int id){
+    public boolean delete(int id) {
         openBase();
-        Base.openTransaction();
         Organizer organizer = Organizer.findById(id);
-        boolean result = organizer.delete();
-        Base.commitTransaction();
+        boolean result = false;
+        if (organizer != null) {
+            Base.openTransaction();
+            result = organizer.delete();
+            Base.commitTransaction();
+        }
         return result;
-     }
-    
-     public Organizer update(int id, String name){
+    }
+
+    public Organizer update(int id, String name) {
         openBase();
-        Base.openTransaction();
         Organizer organizer = Organizer.findById(id);
-        organizer.setString("name", name);
-        organizer.saveIt();
-        Base.commitTransaction();
+        if (organizer != null) {
+            Base.openTransaction();
+            organizer.setString("name", name);
+            organizer.save();
+            Base.commitTransaction();
+        }
         return organizer;
-     }
-     
-     public LazyList<Model> listEvents(int id){
-         openBase();
-         return Event.where("organizer_id = ?", id);
-     }
-     
+    }
+
+    public LazyList<Model> listEvents(int id) {
+        openBase();
+        return Event.where("organizer_id = ?", id);
+    }
+
     private void openBase() {
         try {
             URI dbUri = new URI(System.getenv("DATABASE_URL"));

@@ -7,8 +7,6 @@ package com.tecpro.guiacultural.crud;
 
 import com.tecpro.guiacultural.models.Concert;
 import com.tecpro.guiacultural.models.Organizer;
-import java.net.URI;
-import java.net.URISyntaxException;
 import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 import org.javalite.activejdbc.Model;
@@ -23,20 +21,25 @@ public class CRUDConcert extends CRUDEvent {
             int organizer_id, String description, String musician, String genre) {
         openBase();
         Base.openTransaction();
-        Concert concert = Concert.createIt("name", name,
-                "location",location,
-                "price",price,
-                "date_from",date_from,
-                "date_until",date_until,
-                "hour_from",hour_from,
-                "hour_until",hour_until,
-                "description",description,
-                "musician",musician,
-                "genre",genre);
-        Organizer organizer = Organizer.findById(organizer_id);
-        organizer.add(concert);
-        Base.commitTransaction();
-        return concert;
+        Concert concert = Concert.create("name", name,
+                "location", location,
+                "price", price,
+                "date_from", date_from,
+                "date_until", date_until,
+                "hour_from", hour_from,
+                "hour_until", hour_until,
+                "description", description,
+                "musician", musician,
+                "genre", genre);
+        if (concert.save()) {
+            Organizer organizer = Organizer.findById(organizer_id);
+            if (organizer != null) {
+                organizer.add(concert);
+                Base.commitTransaction();
+                return concert;
+            }
+        }
+        return null;
     }
 
     public Concert get(int id) {
@@ -65,8 +68,8 @@ public class CRUDConcert extends CRUDEvent {
         openBase();
         Base.openTransaction();
         Concert concert = Concert.findById(id);
-        concert.set("name",name,"location",location,"price",price,"date_from",date_from,"date_until",date_until,"hour_from",
-                hour_from,"hour_until",hour_until,"description",description,"musician",musician,"genre",genre);
+        concert.set("name", name, "location", location, "price", price, "date_from", date_from, "date_until", date_until, "hour_from",
+                hour_from, "hour_until", hour_until, "description", description, "musician", musician, "genre", genre);
         concert.saveIt();
         Base.commitTransaction();
         return concert;
