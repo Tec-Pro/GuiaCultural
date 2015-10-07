@@ -9,6 +9,7 @@ import com.tecpro.guiacultural.crud.CRUDOrganizer;
 import com.tecpro.guiacultural.models.Organizer;
 import java.util.Map;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,6 +49,12 @@ public class OrganizerController {
         return crud.listEvents(id).toJson(true);
     }
 
+    @RequestMapping(value = "/organizer", method = RequestMethod.GET)
+    public String createWithBody(@RequestBody Map<String,String> params){
+        CRUDOrganizer crud = new CRUDOrganizer();
+        return crud.create(params.get("name")).toJson(true);
+    }
+    
     @RequestMapping(value = "/organizers", method = RequestMethod.POST)
     public String create(@RequestParam(value = "name") String name) {
         if (!name.isEmpty()) {
