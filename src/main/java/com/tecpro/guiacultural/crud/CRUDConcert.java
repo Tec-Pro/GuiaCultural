@@ -73,6 +73,7 @@ public class CRUDConcert extends CRUDEvent {
                 return concert;
             }
         }
+        Base.commitTransaction();
         return null;
     }
 

@@ -21,7 +21,7 @@ public class CRUDTheaterPlay extends CRUDEvent {
             int organizer_id, String description, String play, String actor_group, String actors, String rating, String synopsis) {
         openBase();
         Base.openTransaction();
-        TheaterPlay proyection = TheaterPlay.createIt("name", name,
+        TheaterPlay theaterPlay = TheaterPlay.create("name", name,
                 "location", location,
                 "price", price,
                 "date_from", date_from,
@@ -31,16 +31,20 @@ public class CRUDTheaterPlay extends CRUDEvent {
                 "description", description,
                 "rating", rating,
                 "synopsis", synopsis);
-        Organizer organizer = Organizer.findById(organizer_id);
-        organizer.add(proyection);
+        if (theaterPlay.save()) {
+            Organizer organizer = Organizer.findById(organizer_id);
+            if (organizer != null) {
+                organizer.add(theaterPlay);
+            }
+        }
         Base.commitTransaction();
-        return proyection;
+        return null;
     }
 
     public TheaterPlay get(int id) {
         openBase();
-        TheaterPlay proyection = TheaterPlay.findById(id);
-        return proyection;
+        TheaterPlay theaterPlay = TheaterPlay.findById(id);
+        return theaterPlay;
     }
 
     @Override
@@ -52,8 +56,11 @@ public class CRUDTheaterPlay extends CRUDEvent {
     public boolean delete(int id) {
         openBase();
         Base.openTransaction();
-        TheaterPlay proyection = TheaterPlay.findById(id);
-        boolean result = proyection.delete();
+        boolean result = false;
+        TheaterPlay theaterPlay = TheaterPlay.findById(id);
+        if (theaterPlay != null) {
+            result = theaterPlay.delete();
+        }
         Base.commitTransaction();
         return result;
     }
@@ -62,20 +69,22 @@ public class CRUDTheaterPlay extends CRUDEvent {
             String description, String play, String actor_group, String actors, String rating, String synopsis) {
         openBase();
         Base.openTransaction();
-        TheaterPlay proyection = TheaterPlay.findById(id);
-        proyection.set("name", name,
-                "location", location,
-                "price", price,
-                "date_from", date_from,
-                "date_until", date_until,
-                "hour_from", hour_from,
-                "hour_until", hour_until,
-                "description", description,
-                "rating", rating,
-                "synopsis", synopsis);
-        proyection.saveIt();
+        TheaterPlay theaterPlay = TheaterPlay.findById(id);
+        if (theaterPlay != null) {
+            theaterPlay.set("name", name,
+                    "location", location,
+                    "price", price,
+                    "date_from", date_from,
+                    "date_until", date_until,
+                    "hour_from", hour_from,
+                    "hour_until", hour_until,
+                    "description", description,
+                    "rating", rating,
+                    "synopsis", synopsis);
+            theaterPlay.save();
+        }
         Base.commitTransaction();
-        return proyection;
+        return theaterPlay;
     }
 
 }

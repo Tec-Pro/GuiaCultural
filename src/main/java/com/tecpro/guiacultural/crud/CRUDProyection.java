@@ -15,13 +15,13 @@ import org.javalite.activejdbc.Model;
  *
  * @author joako
  */
-public class CRUDProyection extends CRUDEvent{
+public class CRUDProyection extends CRUDEvent {
 
     public Proyection create(String name, String location, float price, String date_from, String date_until, String hour_from, String hour_until,
             int organizer_id, String description, String movie_name, int length, String director, int year, String country, String genre, String rating, String synopsis) {
         openBase();
         Base.openTransaction();
-        Proyection proyection = Proyection.createIt("name", name,
+        Proyection proyection = Proyection.create("name", name,
                 "location", location,
                 "price", price,
                 "date_from", date_from,
@@ -37,10 +37,16 @@ public class CRUDProyection extends CRUDEvent{
                 "rating", rating,
                 "synopsis", synopsis,
                 "genre", genre);
-        Organizer organizer = Organizer.findById(organizer_id);
-        organizer.add(proyection);
+        if (proyection.save()) {
+            Organizer organizer = Organizer.findById(organizer_id);
+            if (organizer != null) {
+                organizer.add(proyection);
+                Base.commitTransaction();
+                return proyection;
+            }
+        }
         Base.commitTransaction();
-        return proyection;
+        return null;
     }
 
     public Proyection get(int id) {
@@ -58,8 +64,11 @@ public class CRUDProyection extends CRUDEvent{
     public boolean delete(int id) {
         openBase();
         Base.openTransaction();
+        boolean result = false;
         Proyection proyection = Proyection.findById(id);
-        boolean result = proyection.delete();
+        if (proyection != null) {
+            result = proyection.delete();
+        }
         Base.commitTransaction();
         return result;
     }
@@ -69,26 +78,27 @@ public class CRUDProyection extends CRUDEvent{
         openBase();
         Base.openTransaction();
         Proyection proyection = Proyection.findById(id);
-        proyection.set("name", name,
-                "location", location,
-                "price", price,
-                "date_from", date_from,
-                "date_until", date_until,
-                "hour_from", hour_from,
-                "hour_until", hour_until,
-                "description", description,
-                "movie_name", movie_name,
-                "length", length,
-                "director", director,
-                "year", year,
-                "country", country,
-                "rating", rating,
-                "synopsis", synopsis,
-                "genre", genre);
-        proyection.saveIt();
+        if (proyection != null) {
+            proyection.set("name", name,
+                    "location", location,
+                    "price", price,
+                    "date_from", date_from,
+                    "date_until", date_until,
+                    "hour_from", hour_from,
+                    "hour_until", hour_until,
+                    "description", description,
+                    "movie_name", movie_name,
+                    "length", length,
+                    "director", director,
+                    "year", year,
+                    "country", country,
+                    "rating", rating,
+                    "synopsis", synopsis,
+                    "genre", genre);
+            proyection.save();
+        }
         Base.commitTransaction();
         return proyection;
     }
-
 
 }

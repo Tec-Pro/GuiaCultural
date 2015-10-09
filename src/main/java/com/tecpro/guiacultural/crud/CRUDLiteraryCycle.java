@@ -38,7 +38,7 @@ public class CRUDLiteraryCycle extends CRUDEvent {
             Base.commitTransaction();
             return literaryCycle;
         }
-        Base.rollbackTransaction();
+        Base.commitTransaction();
         return null;
     }
 
