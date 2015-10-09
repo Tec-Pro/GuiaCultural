@@ -19,8 +19,8 @@ import org.javalite.activejdbc.Model;
  */
 public class CRUDOrganizer {
 
-    public Organizer create(String name) {
-        if (name != null) {
+    public Organizer create(int name) {
+        //if (name != null) {
             openBase();
             Base.openTransaction();
             Organizer organizer = Organizer.create("name", name);
@@ -28,8 +28,9 @@ public class CRUDOrganizer {
                 Base.commitTransaction();
                 return organizer;
             }
-        }
-        return null;
+            Base.rollbackTransaction();
+        //}
+            return null;
     }
 
     public Organizer get(int id) {

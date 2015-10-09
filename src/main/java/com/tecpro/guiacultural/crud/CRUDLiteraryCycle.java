@@ -16,23 +16,30 @@ import org.javalite.activejdbc.Model;
  * @author joako
  */
 public class CRUDLiteraryCycle extends CRUDEvent {
-    
+
     public LiteraryCycle create(String name, String location, float price, String date_from, String date_until, String hour_from, String hour_until,
             int organizer_id, String description) {
         openBase();
         Base.openTransaction();
-        LiteraryCycle literaryCycle = LiteraryCycle.createIt("name", name,
-                "location",location,
-                "price",price,
-                "date_from",date_from,
-                "date_until",date_until,
-                "hour_from",hour_from,
-                "hour_until",hour_until,
-                "description",description);
-        Organizer organizer = Organizer.findById(organizer_id);
-        organizer.add(literaryCycle);
-        Base.commitTransaction();
-        return literaryCycle;
+        LiteraryCycle literaryCycle = LiteraryCycle.create("name", name,
+                "location", location,
+                "price", price,
+                "date_from", date_from,
+                "date_until", date_until,
+                "hour_from", hour_from,
+                "hour_until", hour_until,
+                "description", description);
+        if (literaryCycle.save()) {
+            Organizer organizer = Organizer.findById(organizer_id);
+            if (organizer == null) {
+                return null;
+            }
+            organizer.add(literaryCycle);
+            Base.commitTransaction();
+            return literaryCycle;
+        }
+        Base.rollbackTransaction();
+        return null;
     }
 
     public LiteraryCycle get(int id) {
@@ -50,8 +57,11 @@ public class CRUDLiteraryCycle extends CRUDEvent {
     public boolean delete(int id) {
         openBase();
         Base.openTransaction();
+        boolean result = false;
         LiteraryCycle literaryCycle = LiteraryCycle.findById(id);
-        boolean result = literaryCycle.delete();
+        if (literaryCycle != null) {
+            result = literaryCycle.delete();
+        }
         Base.commitTransaction();
         return result;
     }
@@ -61,12 +71,13 @@ public class CRUDLiteraryCycle extends CRUDEvent {
         openBase();
         Base.openTransaction();
         LiteraryCycle literaryCycle = LiteraryCycle.findById(id);
-        literaryCycle.set("name",name,"location",location,"price",price,"date_from",date_from,"date_until",date_until,"hour_from",
-                hour_from,"hour_until",hour_until,"description",description);
-        literaryCycle.saveIt();
+        if (literaryCycle != null) {
+            literaryCycle.set("name", name, "location", location, "price", price, "date_from", date_from, "date_until", date_until, "hour_from",
+                    hour_from, "hour_until", hour_until, "description", description);
+            literaryCycle.save();
+        }
         Base.commitTransaction();
         return literaryCycle;
     }
-
 
 }

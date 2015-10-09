@@ -17,6 +17,40 @@ import org.javalite.activejdbc.Model;
  */
 public class CRUDConcert extends CRUDEvent {
 
+    /*
+     public Concert create(String aName, String aLocation, float aPrice, String aDate_from, String aDate_until, String aHour_from, String aHour_until,
+     int anOrganizer_id, String aDescription, String aMusician, String aGenre) {
+     openBase();
+     if (aName == null || aLocation == null || aDate_from == null || aHour_from == null || aPrice < 0.0f) {
+     return null;
+     }
+     String name = aName;
+     String location = aLocation;
+     float price = aPrice;
+     String date_from = aDate_from;
+     String date_until = aDate_until;
+     if (date_until == null) {
+     date_until = "";
+     }
+     String hour_from = aHour_from;
+     String hour_until = aHour_until;
+     if (hour_until == null) {
+     hour_until = "";
+     }
+     String description = aDescription;
+     if (description == null) {
+     description = "";
+     }
+     String musician = aMusician;
+     if (musician == null) {
+     musician = "";
+     }
+     String genre = aGenre;
+     if (genre == null) {
+     genre = "";
+     }
+    
+     */
     public Concert create(String name, String location, float price, String date_from, String date_until, String hour_from, String hour_until,
             int organizer_id, String description, String musician, String genre) {
         openBase();
@@ -56,9 +90,12 @@ public class CRUDConcert extends CRUDEvent {
 
     public boolean delete(int id) {
         openBase();
+        boolean result = false;
         Base.openTransaction();
         Concert concert = Concert.findById(id);
-        boolean result = concert.delete();
+        if (concert != null){
+            result = concert.delete();
+        }
         Base.commitTransaction();
         return result;
     }
@@ -68,9 +105,11 @@ public class CRUDConcert extends CRUDEvent {
         openBase();
         Base.openTransaction();
         Concert concert = Concert.findById(id);
-        concert.set("name", name, "location", location, "price", price, "date_from", date_from, "date_until", date_until, "hour_from",
-                hour_from, "hour_until", hour_until, "description", description, "musician", musician, "genre", genre);
-        concert.saveIt();
+        if (concert != null) {
+            concert.set("name", name, "location", location, "price", price, "date_from", date_from, "date_until", date_until, "hour_from",
+                    hour_from, "hour_until", hour_until, "description", description, "musician", musician, "genre", genre);
+            concert.save();
+        }
         Base.commitTransaction();
         return concert;
     }

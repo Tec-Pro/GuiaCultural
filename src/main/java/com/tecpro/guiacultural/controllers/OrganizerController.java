@@ -8,10 +8,12 @@ package com.tecpro.guiacultural.controllers;
 import com.tecpro.guiacultural.crud.CRUDOrganizer;
 import com.tecpro.guiacultural.models.Organizer;
 import java.util.Map;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -39,6 +41,7 @@ public class OrganizerController {
         if (organizer != null) {
             return organizer.toJson(true);
         }
+        
         return "{error: \"organizer not found\"}";
     }
 
@@ -51,6 +54,7 @@ public class OrganizerController {
         return "{error: \"organizer not found\"}";
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/organizers", method = RequestMethod.POST)
     public String create(@RequestParam(value = "name") String name) {
         CRUDOrganizer crud = new CRUDOrganizer();
