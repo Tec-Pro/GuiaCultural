@@ -7,11 +7,18 @@ package com.tecpro.guiacultural.crud;
 
 import com.tecpro.guiacultural.models.Event;
 import com.tecpro.guiacultural.models.Organizer;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.websocket.Decoder;
 import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.LazyList;
 import org.javalite.activejdbc.Model;
+import org.javalite.common.Convert;
 
 /**
  *
@@ -19,11 +26,12 @@ import org.javalite.activejdbc.Model;
  */
 public class CRUDOrganizer {
 
-    public Organizer create(String name) {
+    public Organizer create(String name, File img) {
         if (name != null) {
             openBase();
             Base.openTransaction();
-            Organizer organizer = Organizer.create("name", name);
+            byte[] ba = Convert.toBytes(img);
+            Organizer organizer = Organizer.create("name", name, "org_img", ba);
             if (organizer.save()) {
                 Base.commitTransaction();
                 return organizer;

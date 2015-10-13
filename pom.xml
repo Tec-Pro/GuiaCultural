@@ -63,6 +63,14 @@
             <version>3.1</version>
             <type>jar</type>
         </dependency>
+        
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>20030203.000550</version>
+            <type>jar</type>
+        </dependency>
+
     </dependencies>
    
     <build>

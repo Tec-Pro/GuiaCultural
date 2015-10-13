@@ -7,7 +7,16 @@ package com.tecpro.guiacultural.controllers;
 
 import com.tecpro.guiacultural.crud.CRUDOrganizer;
 import com.tecpro.guiacultural.models.Organizer;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +50,7 @@ public class OrganizerController {
         if (organizer != null) {
             return organizer.toJson(true);
         }
-        
+
         return "{error: \"organizer not found\"}";
     }
 
@@ -56,11 +65,21 @@ public class OrganizerController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/organizers", method = RequestMethod.POST)
-    public String create(@RequestParam(value = "name") String name) {
+    public String create(@RequestParam Map<String, String> params) {
         CRUDOrganizer crud = new CRUDOrganizer();
-        Organizer organizer = crud.create(name);
-        if (organizer != null) {
-            return organizer.toJson(true);
+        File img = null;
+        try {
+            URL url = new URL("http://image-link-archive.meteor.com/images/placeholder-640x480.png");
+            if (params.get("image_url") != null) {
+                url = new URL(params.get("image_url"));
+            }
+            FileUtils.copyURLToFile(url, img);
+            Organizer organizer = crud.create(params.get("name"), img);
+            if (organizer != null) {
+                return organizer.toJson(true);
+            }
+        } catch (Exception e) {
+            return "{error: "+e.toString()+"\"an error ocurred\"}";
         }
 
         return "{error: \"field name can't be empty\"}";
