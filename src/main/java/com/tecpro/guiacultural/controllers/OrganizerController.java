@@ -39,9 +39,13 @@ public class OrganizerController {
         CRUDOrganizer crud = new CRUDOrganizer();
         Organizer organizer = crud.get(id);
         if (organizer != null) {
-            return organizer.toJson(true)+"<img src=\""+organizer.getString("org_img")+"\">";
+            String img_url = organizer.getString("org_img");
+            if (img_url != null) {
+                return organizer.toJson(true) + "<img src=\"" + organizer.getString("org_img") + "\">";
+            }
+            return organizer.toJson(true);
         }
-        
+
         return "{error: \"organizer not found\"}";
     }
 
@@ -56,11 +60,15 @@ public class OrganizerController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/organizers", method = RequestMethod.POST)
-    public String create(@RequestParam Map<String,String> params) {
+    public String create(@RequestParam Map<String, String> params) {
         CRUDOrganizer crud = new CRUDOrganizer();
-        Organizer organizer = crud.create(params.get("name"),params.get("image_url"));
+        String img_url = params.get("image_url");
+        Organizer organizer = crud.create(params.get("name"), img_url);
         if (organizer != null) {
-            return organizer.toJson(true)+ "<img src=\""+params.get("image_url")+"\">" ;
+            if (img_url != null) {
+                return organizer.toJson(true) + "<img src=\"" + params.get("image_url") + "\">";
+            }
+            return organizer.toJson(true);
         }
 
         return "{error: \"field name can't be empty\"}";
