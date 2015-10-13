@@ -39,7 +39,7 @@ public class OrganizerController {
         CRUDOrganizer crud = new CRUDOrganizer();
         Organizer organizer = crud.get(id);
         if (organizer != null) {
-            return organizer.toJson(true);
+            return organizer.toJson(true)+"<img src=\""+organizer.getString("org_img")+"\">";
         }
         
         return "{error: \"organizer not found\"}";
